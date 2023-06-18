@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "kurusugawa-cli"
 version = "0.1.0"
-description = "来栖川用語を出力するCLIです"
-authors = ["来栖川 芹香"]
+description = "'pandaset'データセットに関するスクリプト"
+authors = ["Kurusugawa Computer Inc."]
 packages = [
-    { include = "kci" }
+    { include = "pandasetutils" }
 ]
 readme="README.md"
-repository="https://github.com/kurusugawa-computer/kci-python-devcontainer"
+repository="https://github.com/kurusugawa-computer/pandasetutils"
 classifiers = [
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -17,15 +17,11 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-click = "*"
-requests = "*"
+python = "^3.11"
 
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7"
-pytest-xdist = "*"
-pytest-cov = "*"
 
 [tool.poetry.group.formatter.dependencies]
 black = "^23"
@@ -40,18 +36,11 @@ ruff = "<0.0.260"
 mypy = "^1"
 pylint = "^2"
 
-[tool.poetry.group.documentation.dependencies]
-sphinx = "^6.1"
-pydata-sphinx-theme = ">=0.13"
-
 [tool.poetry.group.typeshed.dependencies]
 types-requests = "*"
 
-[tool.poetry.scripts]
-kurusugawa-cli = "kci.__main__:cli"
-
 [tool.black]
-line-length = 120
+line-length = 150
 
 [tool.mypy]
 # スタブが無いパッケージのエラーは無視させる.サードパーティのライブラリに型情報がないケースもあるため
@@ -60,7 +49,7 @@ ignore_missing_imports = true
 check_untyped_defs = true
 
 [tool.ruff]
-target-version = "py310"
+target-version = "py311"
 
 ignore = [
     "RUF001", # 全角記号など`ambiguous unicode character`も使いたいため

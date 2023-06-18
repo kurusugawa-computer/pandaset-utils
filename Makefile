@@ -1,5 +1,5 @@
 ifndef SOURCE_FILES
-	export SOURCE_FILES:=kci
+	export SOURCE_FILES:=pandasetutils
 endif
 ifndef TEST_FILES
 	export TEST_FILES:=tests
@@ -22,14 +22,3 @@ lint:
 test:
 	# 並列実行してレポートも出力する
 	poetry run pytest -n auto  --cov=kci --cov-report=html tests
-
-docs:
-	cd docs && poetry run make html
-
-# publish:
-# 	# public PyPIにデプロイ 
-# 	poetry publish --build
-# 	# 社内PyPIにデプロイ
-# 	# 事前に`$ poetry config repositories.kci-upload https://kurusugawa.jp/nexus3/repository/KRS-pypi/ `を実行すること
-# 	poetry publish --repository kci-upload --build
-	
