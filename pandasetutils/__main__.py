@@ -2,8 +2,8 @@ import logging
 
 import click
 
-import kci
-from kci.command.address import address
+import pandasetutils
+from pandasetutils.command.address import address
 
 
 def set_logger() -> None:
@@ -13,7 +13,7 @@ def set_logger() -> None:
 
 
 @click.group()
-@click.version_option(version=kci.__version__)
+@click.version_option(version=pandasetutils.__version__)
 def cli() -> None:
     set_logger()
 
