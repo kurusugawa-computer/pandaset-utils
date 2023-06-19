@@ -7,7 +7,7 @@ endif
 .PHONY: docs lint test format publish_test publish
 
 format:
-	poetry run black ${SOURCE_FILES} ${TEST_FILES}
+	poetry run black ${SOURCE_FILES} ${TEST_FILES} --preview
 	poetry run ruff check ${SOURCE_FILES} ${TEST_FILES} --fix-only --exit-zero
 
 lint:

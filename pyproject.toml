@@ -27,12 +27,7 @@ pytest = "^7"
 black = "^23"
 
 [tool.poetry.group.linter.dependencies]
-# ruffのバージョンの上限を指定する理由: 
-# ruffは0.0.260から"line-width"の計算を"character count"から"unicode width"に変更した。
-# black 23.3(通常版)は"line-width"を"character count"で計算している。
-# ruffとblackで"line-with"の計算が異なってしまうので、ruffのバージョンの上限を指定した。
-# https://qiita.com/yuji38kwmt/items/04208d2d2cafe1218287
-ruff = "<0.0.260"
+ruff = "*"
 mypy = "^1"
 pylint = "^2"
 
@@ -82,9 +77,12 @@ ignore = [
     "ISC", #flake8-implicit-str-concat
     "N", # pep8-naming
     "PT", # flake8-pytest-style
+
+    "PD901",
+    "G004"
 ]
 
-line-length = 120
+line-length = 150
 select = [
     "ALL"
 ]
