@@ -35,7 +35,7 @@ class DataSetAccessor:
         sequence = self.dataset[sequence_id]
         sequence.load_cuboids()
 
-        result:list[CuboidCounts] = []
+        result: list[CuboidCounts] = []
         try:
             for frame_no, df in enumerate(sequence.cuboids.data):
                 counter = Counter(df["label"])
@@ -80,7 +80,7 @@ def create_cuboid_counts_dataframe(input_dir: Path, sequence_id_list: None | lis
     df = pandas.DataFrame(data)
     df = df.fillna(0)
     df = df.set_index(["sequence_id", "frame_no"])
-    
+
     # columnを辞書順に並び替える
     df = df[sorted(df.columns)]
     return df
