@@ -7,6 +7,9 @@ endif
 .PHONY: docs lint test format publish_test publish
 
 format:
+	# --preview指定する理由
+	# ruffに合わせて、非ASCII文字の長さをunicode widthにするため
+	# https://github.com/psf/black/pull/3445
 	poetry run black ${SOURCE_FILES} ${TEST_FILES} --preview
 	poetry run ruff check ${SOURCE_FILES} ${TEST_FILES} --fix-only --exit-zero
 

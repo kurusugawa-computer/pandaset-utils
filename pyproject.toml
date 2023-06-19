@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "kurusugawa-cli"
+name = "pandaset-utils"
 version = "0.1.0"
 description = "'pandaset'データセットに関するスクリプト"
 authors = ["Kurusugawa Computer Inc."]
@@ -7,7 +7,7 @@ packages = [
     { include = "pandasetutils" }
 ]
 readme="README.md"
-repository="https://github.com/kurusugawa-computer/pandasetutils"
+repository="https://github.com/kurusugawa-computer/pandaset-utils"
 classifiers = [
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -19,6 +19,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.11"
 pandas = "*"
+pandaset = { path = "pandaset-devkit/python", develop = false }
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7"

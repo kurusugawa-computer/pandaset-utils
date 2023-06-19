@@ -35,14 +35,14 @@ class DataSetAccessor:
         sequence = self.dataset[sequence_id]
         sequence.load_cuboids()
 
-        result = {"sequence_id": sequence_id}
+        result:list[CuboidCounts] = []
         try:
             for frame_no, df in enumerate(sequence.cuboids.data):
-                result["frame_no"] = frame_no
                 counter = Counter(df["label"])
-                result.update(counter)
+                result.append(CuboidCounts(sequence_id=sequence_id, frame_no=frame_no, counts=counter))
         finally:
             self.dataset.unload(sequence_id)
+
         return result
 
 
@@ -58,18 +58,18 @@ def create_cuboid_counts_dataframe(input_dir: Path, sequence_id_list: None | lis
         columns: cuboidのlabel
     """
     dataset = DataSet(str(input_dir))
-    sequence_id_list = dataset.sequences()
+    _sequence_id_list = sequence_id_list if sequence_id_list is not None else dataset.sequences()
 
     dataset_accessor = DataSetAccessor(dataset)
 
     data: list[dict[str, Any]] = []
-    for sequence_id in sequence_id_list:
+    for sequence_id in _sequence_id_list:
         logger.debug(f"{sequence_id=} :: cuboidのlabelごとのオブジェクト数を取得します。")
 
         try:
-            cuboid_counts_list = dataset_accessor.get_cuboid_counts(sequence_id)
+            cuboid_counts_list = dataset_accessor.get_cuboid_counts_list(sequence_id)
             for cuboid_counts in cuboid_counts_list:
-                tmp = copy.deepcopy(cuboid_counts.counts)
+                tmp: dict[str, Any] = copy.deepcopy(cuboid_counts.counts)
                 tmp["frame_no"] = cuboid_counts.frame_no
                 tmp["sequence_id"] = cuboid_counts.sequence_id
                 data.append(tmp)
@@ -80,6 +80,9 @@ def create_cuboid_counts_dataframe(input_dir: Path, sequence_id_list: None | lis
     df = pandas.DataFrame(data)
     df = df.fillna(0)
     df = df.set_index(["sequence_id", "frame_no"])
+    
+    # columnを辞書順に並び替える
+    df = df[sorted(df.columns)]
     return df
 
 
@@ -93,7 +96,7 @@ def main() -> None:
     df.to_csv(str(output_file))
 
 
-def parse_args() -> argparse.NameSpace:
+def parse_args() -> argparse.Namespace:
     parser = ArgumentParser(
         description="cuboidのlabelごとのオブジェクト数をCSV形式で出力します。",
         formatter_class=ArgumentDefaultsHelpFormatter,
