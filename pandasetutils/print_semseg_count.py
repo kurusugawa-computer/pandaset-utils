@@ -137,7 +137,7 @@ def create_semseg_point_counts_dataframe(input_dir: Path, sequence_id_list: None
 
     # columnを辞書順に並び替える
     df = df[sorted(df.columns)]
-    renamed_target = {int(k):v for k, v in SEMSEG_CLASSES.items()}
+    renamed_target = {int(k): v for k, v in SEMSEG_CLASSES.items()}
     df.rename(columns=renamed_target, inplace=True)
     return df
 
@@ -154,7 +154,7 @@ def main() -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = ArgumentParser(
-        description="semsegのlabelごとの点数をCSV形式で出力します。",
+        description="semsegのclassごとの点数をCSV形式で出力します。",
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("-i", "--input_dir", type=Path, required=True, help="pandasetのディレクトリ")
