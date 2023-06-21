@@ -18,6 +18,7 @@
         "asyncio",
         "dateutil",
         "dtypes",
+        "fillna",
         "getrgb",
         "giveup",
         "groupby",
@@ -25,8 +26,10 @@
         "itertools",
         "nargs",
         "noqa",
+        "pandaset",
         "popen",
         "pylint",
+        "semseg",
         "tzlocal",
         "unsubscriptable"
     ]

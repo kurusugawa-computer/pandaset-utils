@@ -13,9 +13,7 @@
     },
     "files.autoSave": "afterDelay",
     "files.autoSaveDelay": 1000,
-    "python.pythonPath": ".venv/bin/python",
     "python.languageServer": "Pylance",
-    "python.autoComplete.addBrackets": true,
     "python.autoComplete.extraPaths": [
         ".venv/lib/python3.8/site-packages/"
     ],
@@ -46,10 +44,6 @@
     ],
     "python.analysis.completeFunctionParens": true,
     "[python]": {
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        },
     },
     "python.testing.autoTestDiscoverOnSaveEnabled": false,
 }
