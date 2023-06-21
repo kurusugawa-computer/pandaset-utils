@@ -80,6 +80,7 @@ ignore = [
     "PT", # flake8-pytest-style
 
     "PD901",
+    "PD002",
     "G004"
 ]
 
@@ -136,6 +137,7 @@ disable = [
     "protected-access",
     "logging-format-interpolation",
     "import-error", # ディレクトリ構成がpython的に正しくないので、importが正しく認識されないため
+    "broad-exception-caught",
 ]
 
 [build-system]

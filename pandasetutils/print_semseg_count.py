@@ -14,6 +14,55 @@ from pandasetutils.common.utils import set_logger
 
 logger = logging.getLogger(__name__)
 
+SEMSEG_CLASSES = {
+    "1": "Smoke",
+    "2": "Exhaust",
+    "3": "Spray or rain",
+    "4": "Reflection",
+    "5": "Vegetation",
+    "6": "Ground",
+    "7": "Road",
+    "8": "Lane Line Marking",
+    "9": "Stop Line Marking",
+    "10": "Other Road Marking",
+    "11": "Sidewalk",
+    "12": "Driveway",
+    "13": "Car",
+    "14": "Pickup Truck",
+    "15": "Medium-sized Truck",
+    "16": "Semi-truck",
+    "17": "Towed Object",
+    "18": "Motorcycle",
+    "19": "Other Vehicle - Construction Vehicle",
+    "20": "Other Vehicle - Uncommon",
+    "21": "Other Vehicle - Pedicab",
+    "22": "Emergency Vehicle",
+    "23": "Bus",
+    "24": "Personal Mobility Device",
+    "25": "Motorized Scooter",
+    "26": "Bicycle",
+    "27": "Train",
+    "28": "Trolley",
+    "29": "Tram / Subway",
+    "30": "Pedestrian",
+    "31": "Pedestrian with Object",
+    "32": "Animals - Bird",
+    "33": "Animals - Other",
+    "34": "Pylons",
+    "35": "Road Barriers",
+    "36": "Signs",
+    "37": "Cones",
+    "38": "Construction Signs",
+    "39": "Temporary Construction Barriers",
+    "40": "Rolling Containers",
+    "41": "Building",
+    "42": "Other Static Object",
+}
+"""
+semsegのidとnameのdict
+`sequence.semseg.classes`から取得した情報
+"""
+
 
 @dataclass(frozen=True)
 class SemsegCounts:
@@ -33,13 +82,17 @@ class DataSetAccessor:
         keyは
         """
         sequence = self.dataset[sequence_id]
-        # sequence.load_cuboids()
+        sequence.load_semseg()
 
         result: list[SemsegCounts] = []
         try:
+            if sequence.semseg is None:
+                logger.warning(f"{sequence_id=} :: semsegデータが存在しません。")
+                return []
+
             for frame_no, df in enumerate(sequence.semseg.data):
                 counter = Counter(df["class"])
-                result.append(SemsegCounts(sequence_id=sequence_id, frame_no=frame_no, counts=counter))
+                result.append(SemsegCounts(sequence_id=sequence_id, frame_no=frame_no, point_counts=counter))
         finally:
             self.dataset.unload(sequence_id)
 
@@ -59,7 +112,7 @@ def create_semseg_point_counts_dataframe(input_dir: Path, sequence_id_list: None
         columns: cuboidのlabel
     """
     dataset = DataSet(str(input_dir))
-    _sequence_id_list = sequence_id_list if sequence_id_list is not None else dataset.sequences()
+    _sequence_id_list = sequence_id_list if sequence_id_list is not None else dataset.sequences(with_semseg=True)
 
     dataset_accessor = DataSetAccessor(dataset)
 
@@ -84,6 +137,8 @@ def create_semseg_point_counts_dataframe(input_dir: Path, sequence_id_list: None
 
     # columnを辞書順に並び替える
     df = df[sorted(df.columns)]
+    renamed_target = {int(k):v for k, v in SEMSEG_CLASSES.items()}
+    df.rename(columns=renamed_target, inplace=True)
     return df
 
 
