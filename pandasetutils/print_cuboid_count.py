@@ -91,7 +91,7 @@ def main() -> None:
     set_logger()
 
     df = create_cuboid_counts_dataframe(args.input_dir, args.sequence_id)
-    output_file = args.output
+    output_file = args.output_csv
     output_file.parent.mkdir(exist_ok=True, parents=True)
     df.to_csv(str(output_file))
 
@@ -101,8 +101,8 @@ def parse_args() -> argparse.Namespace:
         description="cuboidのlabelごとのオブジェクト数をCSV形式で出力します。",
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("-i", "--input_dir", type=Path, required=True, help="pandasetのディレクトリ")
-    parser.add_argument("-o", "--output", type=Path, required=True, help="CSVファイルの出力先")
+    parser.add_argument("input_dir", type=Path, required=True, help="pandasetのディレクトリ")
+    parser.add_argument("output_csv", type=Path, required=True, help="CSVファイルの出力先")
     parser.add_argument(
         "--sequence_id", type=str, nargs="+", required=False, help="集計対象のsequence id。未指定ならばすべてのsequence idが対象です。"
     )
