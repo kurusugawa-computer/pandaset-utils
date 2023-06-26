@@ -34,6 +34,7 @@ def copy_camera_images(
     output_dir.mkdir(exist_ok=True, parents=True)
     for sequence_id in _sequence_id_list:
         camera_dir = input_dir / sequence_id / "camera" / camera_type.value
+        logger.debug(f"sequence_id='{sequence_id}'である'{camera_type.value}'のカメラ画像をコピーします。 :: '{camera_dir}'")
         for frame_no in target_frame_no_list:
             original_first_frame_filename = f"{frame_no}.jpg"
             original_image_file = camera_dir / original_first_frame_filename
@@ -70,7 +71,7 @@ def main() -> None:
 def parse_args() -> argparse.Namespace:
     parser = ArgumentParser(
         description=(
-            "データセットから指定したカメラ画像の`00.jpg`を別のディレクトリにコピーします。コピー後のファイル名は`{sequence_id}__{camera}_00.jpg`です。"
+            "データセットから指定したカメラ画像を別のディレクトリにコピーします。コピー後のファイル名は`{sequence_id}__{camera}__{frame_no}.jpg`です。"
         ),
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
@@ -81,8 +82,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sequence_id", type=str, nargs="+", required=False, help="出力対象のsequence id")
 
     parser.add_argument("--frame_start", default=0, type=int, help="コピー対象のフレームの開始位置")
-    parser.add_argument("--frame_stop", default=80, type=int,help="コピー対象のフレームの終了位置（ただし含まない）")
-    parser.add_argument("--frame_step", default=1, type=int, help="コピー対象のフレームの増分")
+    parser.add_argument("--frame_stop", default=80, type=int, help="コピー対象のフレームの終了位置（ただし含まない）")
+    parser.add_argument("--frame_step", default=10, type=int, help="コピー対象のフレームの増分")
 
     return parser.parse_args()
 

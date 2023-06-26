@@ -70,8 +70,7 @@ def create_cuboid_counts_dataframe(input_dir: Path, sequence_id_list: None | lis
             cuboid_counts_list = dataset_accessor.get_cuboid_counts_list(sequence_id)
             for cuboid_counts in cuboid_counts_list:
                 tmp: dict[str, Any] = copy.deepcopy(cuboid_counts.counts)
-                tmp["frame_no"] = cuboid_counts.frame_no
-                tmp["sequence_id"] = cuboid_counts.sequence_id
+                tmp["frame_no"] = cuboid_counts.frame_notmp["sequence_id"] = cuboid_counts.sequence_id
                 data.append(tmp)
         except Exception:
             logger.warning(f"{sequence_id=} :: labelごとのオブジェクト数の取得に失敗しました。", exc_info=True)
@@ -101,8 +100,8 @@ def parse_args() -> argparse.Namespace:
         description="cuboidのlabelごとのオブジェクト数をCSV形式で出力します。",
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("input_dir", type=Path, required=True, help="pandasetのディレクトリ")
-    parser.add_argument("output_csv", type=Path, required=True, help="CSVファイルの出力先")
+    parser.add_argument("input_dir", type=Path, help="pandasetのディレクトリ")
+    parser.add_argument("output_csv", type=Path, help="CSVファイルの出力先")
     parser.add_argument(
         "--sequence_id", type=str, nargs="+", required=False, help="集計対象のsequence id。未指定ならばすべてのsequence idが対象です。"
     )
