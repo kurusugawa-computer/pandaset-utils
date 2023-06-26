@@ -82,7 +82,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--sequence_id", type=str, nargs="+", required=False, help="出力対象のsequence id")
 
     parser.add_argument("--frame_start", default=0, type=int, help="コピー対象のフレームの開始位置")
-    parser.add_argument("--frame_stop", default=80, type=int,help="コピー対象のフレームの終了位置（ただし含まない）")
+    parser.add_argument("--frame_stop", default=80, type=int, help="コピー対象のフレームの終了位置（ただし含まない）")
     parser.add_argument("--frame_step", default=10, type=int, help="コピー対象のフレームの増分")
 
     return parser.parse_args()

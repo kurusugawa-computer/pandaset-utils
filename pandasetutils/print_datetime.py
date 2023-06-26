@@ -7,12 +7,10 @@ from pathlib import Path
 from typing import Any
 
 import pandas
+from pandasetutils.common.utils import set_logger
 from pandaset import DataSet
 
-from panda2anno.common.utils import set_default_logger
-
 logger = logging.getLogger(__name__)
-
 
 
 def get_datetime_from_json(timestamps_json: Path) -> str:
@@ -22,7 +20,7 @@ def get_datetime_from_json(timestamps_json: Path) -> str:
     with timestamps_json.open() as f:
         data = json.load(f)
     first_timestamp = data[0]
-    first_datetime = datetime.datetime.fromtimestamp(first_timestamp)
+    first_datetime = datetime.datetime.fromtimestamp(first_timestamp)  # noqa: DTZ006
     return first_datetime.isoformat()
 
 
@@ -57,26 +55,27 @@ def create_cuboid_counts_dataframe(input_dir: Path, sequence_id_list: None | lis
     df.fillna(0, inplace=True)
     return df
 
+
 def main() -> None:
     args = parse_args()
-    set_default_logger()
+    set_logger()
 
     df = create_cuboid_counts_dataframe(args.input_dir, sequence_id_list=args.sequence_id)
-    output: Path = args.output
-    output.parent.mkdir(exist_ok=True, parents=True)
-    df.to_csv(str(output), index=False)
+    output_csv_file: Path = args.output_csv
+    output_csv_file.parent.mkdir(exist_ok=True, parents=True)
+    df.to_csv(str(output_csv_file), index=False)
+
 
 def parse_args() -> argparse.Namespace:
     parser = ArgumentParser(
         description="各シーケンスのtimestampをISO形式で出力します。",
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("input_dir", type=Path, required=True, help="pandasetのディレクトリ")
-    parser.add_argument("output_csv", type=Path, required=True, help="CSVファイルの出力先")
+    parser.add_argument("input_dir", type=Path, help="pandasetのディレクトリ")
+    parser.add_argument("output_csv", type=Path, help="CSVファイルの出力先")
     parser.add_argument("--sequence_id", type=str, nargs="+", required=False, help="出力対象のsequence id")
 
     return parser.parse_args()
-
 
 
 if __name__ == "__main__":
