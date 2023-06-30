@@ -60,7 +60,7 @@ RUN set -x \
 
 
 # Python / pip
-RUN ln -s $(which python3.10) /usr/bin/python
+RUN ln -s $(which python3.11) /usr/bin/python
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     PIP_NO_CACHE_DIR=on \
@@ -77,18 +77,8 @@ RUN set -x \
 
 # Add user / Grant sudo privileges
 RUN useradd -m -s /bin/bash -u 5000 -U vscode \
-    && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/ALL \
-   && groupadd --gid 999 docker \
-   && usermod -aG docker vscode
-
-ADD entrypoint.sh /entrypoint.sh
+    && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/ALL 
 
 USER vscode
 
 RUN poetry config virtualenvs.in-project true
-
-# vscode extensions cache
-# https://code.visualstudio.com/docs/remote/containers-advanced#_avoiding-extension-reinstalls-on-container-rebuild
-RUN set -x \
-    && mkdir -p /home/vscode/.vscode-server/extensions /home/vscode/.vscode-server-insiders \
-    && ln -s /home/vscode/.vscode-server/extensions /home/vscode/.vscode-server-insiders/extensions
