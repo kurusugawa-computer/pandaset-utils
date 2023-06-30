@@ -7,8 +7,9 @@ from pathlib import Path
 from typing import Any
 
 import pandas
-from pandasetutils.common.utils import set_logger
 from pandaset import DataSet
+
+from pandasetutils.common.utils import set_logger
 
 logger = logging.getLogger(__name__)
 
