@@ -21,7 +21,7 @@ def get_datetime_from_json(timestamps_json: Path) -> str:
     with timestamps_json.open() as f:
         data = json.load(f)
     first_timestamp = data[0]
-    first_datetime = datetime.datetime.fromtimestamp(first_timestamp)  # noqa: DTZ006
+    first_datetime = datetime.datetime.fromtimestamp(first_timestamp, tz=datetime.UTC)
     return first_datetime.isoformat()
 
 
